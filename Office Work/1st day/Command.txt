@@ -1,0 +1,58 @@
+python -m django startproject todo
+py manage.py startapp members
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+
+1st create app
+then create templates folder inside frontend folder in inside create index.html
+
+then
+main project ->
+update urls add include with  app_name.urls
+
+then go to app folder here update urls views.index
+then update views
+for render
+
+
+then create a model 
+
+example:
+from django.db import models
+class Todo(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_completed = models.BooleanField(default=False)
+
+ 
+
+then this app name migrate to update the database
+then go to admin.py
+
+from .models import Todo
+
+# Register your models here.
+admin.site.register(Todo)
+
+
+
+now go to again views for view the table
+def index(request , *args, **kwargs):
+    
+    mytodos= Todo.objects.all()
+    template_name = 'frontend/index.html'
+    context = {'todos': mytodos}
+    return render(request, template_name, context)
+
+
+
+then go to index.html
+{% for todo in todos %}
+            <tr>
+                <td>{{ todo.id }}</td>
+                <td>{{ todo.title }}</td>
+</tr>

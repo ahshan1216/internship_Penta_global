@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+    {% load static %}
+   
+</head>
+<body>
+<div class="title">TODO List</div>
+<div class="buttons">
+<ul>
+ <li><a href="/add">Add New Todo</a></li>
+   
+
+</div>
+<div class="list">
+    <p>List</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <!-- <th>ID</th> -->
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Update At</th>
+                <th>Completed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos %}
+            <tr>
+                <!-- <td>{{ todo.id }}</td> -->
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.description }}</td>
+                <td>{{ todo.created_at }}</td>
+                <td>{{ todo.updated_at }}</td>
+                <td>{{ todo.is_completed|yesno:"✔,✖" }}</td>
+                <td>
+                    <a href="{% url 'update_todo' todo.id %}">Update</a> |
+                    <a href="{% url 'delete_todo' todo.id %}" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

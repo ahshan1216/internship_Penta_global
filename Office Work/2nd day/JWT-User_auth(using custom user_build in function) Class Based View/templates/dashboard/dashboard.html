@@ -10,5 +10,12 @@
     <div>
         Welcome working process
     </div>
+    <p>Here is your JWT token:</p>
+    <a>{{ jwt_token }}</a> 
+
+   
+    <script>
+        localStorage.setItem('jwtToken', '{{ jwt_token }}');
+    </script>
 </body>
 </html>

@@ -3,6 +3,8 @@ from .forms import SignupForm, LoginForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.views import View
+import datetime, jwt
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -49,12 +51,22 @@ class LoginView(View):
             user = User.objects.filter(email=email).first()  
             if user:
                 if user.check_password(password):
-                    return redirect('dashboard')
+                    payload = {
+                        'id': user.id,
+                        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
+                        'iat': datetime.datetime.utcnow()
+                    }
+                    token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
+                    # return Response({'jwt': token})
+                    return render(request, 'dashboard/dashboard.html', {'jwt_token': token})
+                    # return redirect('dashboard')
                 else:
                     message = "Invalid password"
             else:
                 message = "User with this email does not exist"
+
+            
         else:
             message = "Form is not valid"
             
-        return render(request, self.template_name, {'form': LoginForm(), 'message': message})
+        

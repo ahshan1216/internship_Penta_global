@@ -56,7 +56,7 @@ class LoginView(View):
                         'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
                         'iat': datetime.datetime.utcnow()
                     }
-                    token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
+                    token = jwt.encode(payload, 'secret', algorithm='HS256')
                     # return Response({'jwt': token})
                     return render(request, 'dashboard/dashboard.html', {'jwt_token': token})
                     # return redirect('dashboard')

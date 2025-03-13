@@ -5,20 +5,24 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['username', 'password', 'role']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['username','email', 'password', 'role']
+
+        
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(
             username=validated_data['username'],
+            email=validated_data['email'],
             password=validated_data['password'],
-            role=validated_data.get('role', 'student')
+            role=validated_data.get('role', 'other')
         )
         return user
+    
 
 
 class TokenObtainPairSerializer(serializers.Serializer):
     username = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField()
 
     def validate(self, attrs):

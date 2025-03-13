@@ -33,3 +33,4 @@ class DashboardView(APIView):
         elif request.user.role == 'student':
             return Response({"message": "Welcome to Student's Dashboard"})
         return Response({"message": "No role assigned"}, status=status.HTTP_400_BAD_REQUEST)
+

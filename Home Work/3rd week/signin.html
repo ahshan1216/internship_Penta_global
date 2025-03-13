@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signin</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Signin Form</h2>
+    <form id="signin-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Signin</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#signin-form').on('submit', function(event) {
+                event.preventDefault();
+                
+                // Get form data
+                var username = $('#username').val();
+                var password = $('#password').val();
+
+                // Prepare data to send to API
+                var data = {
+                    username: username,
+                    password: password
+                };
+
+                // Send request to API for authentication
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/api/accounts/login/',  // Replace with the actual URL if different
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        // Store the access token for future requests
+                        localStorage.setItem('access_token', response.access);
+                        window.location.href = 'dashboard.html';  // Redirect to dashboard
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.detail : 'An error occurred';
+                        $('#message').html('<p style="color:red;">' + errorMessage + '</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

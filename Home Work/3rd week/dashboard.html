@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Dashboard</h2>
+    <div id="dashboard-message"></div>
+    <button id="logout-button">Logout</button>
+
+    <script>
+        $(document).ready(function() {
+            // Get the access token from localStorage
+            var accessToken = localStorage.getItem('access_token');
+            
+            if (!accessToken) {
+                window.location.href = 'http://127.0.0.1:8000/api/accounts/login/';  // Redirect to login if no token
+            }
+
+            // Fetch user dashboard information
+            $.ajax({
+                url: 'http://127.0.0.1:8000/api/accounts/dashboard/',  // The API endpoint for the dashboard
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                },
+                success: function(response) {
+                    $('#dashboard-message').html('<p>' + response.message + '</p>');
+                },
+                error: function(xhr, status, error) {
+                    $('#dashboard-message').html('<p style="color:red;">Error loading dashboard.</p>');
+                }
+            });
+
+            // Logout functionality
+            $('#logout-button').on('click', function() {
+                localStorage.removeItem('access_token');  // Remove the token
+                window.location.href = 'signin.html';  // Redirect to login
+            });
+        });
+    </script>
+</body>
+</html>

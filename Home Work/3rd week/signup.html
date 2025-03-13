@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Signup Form</h2>
+    <form id="signup-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select><br><br>
+
+        <button type="submit">Signup</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#signup-form').on('submit', function(event) {
+                event.preventDefault();
+                
+                // Get form data
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var role = $('#role').val();
+
+                // Prepare data to send to API
+                var data = {
+                    username: username,
+                    password: password,
+                    role: role
+                };
+
+                // Send request to API
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/api/accounts/signup/',  // Replace with the actual URL if different
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        $('#message').html('<p>User created successfully!</p>');
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.detail : 'An error occurred';
+                        $('#message').html('<p style="color:red;">' + errorMessage + '</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

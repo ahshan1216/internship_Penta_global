@@ -1,4 +1,4 @@
-python -m django startproject todo
+python -m django startproject test
 py manage.py startapp members
 python manage.py makemigrations
 python manage.py migrate

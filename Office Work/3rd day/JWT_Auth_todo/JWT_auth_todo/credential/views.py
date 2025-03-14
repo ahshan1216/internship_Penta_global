@@ -70,7 +70,8 @@ class TodoView(APIView):
                         {"detail": "You do not have permission to edit fields you only edit is_completed field."},
                     status=status.HTTP_403_FORBIDDEN
             )
-            student_data = {'is_completed': request.data.get('is_completed', todo.is_completed)}
+            student_data = {key: request.data.get(key, getattr(todo, key)) for key in allowed_fields if key in request.data}
+
             serializer = TodoSerializer(todo, data=student_data, partial=True)
             
         else:

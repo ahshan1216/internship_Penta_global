@@ -11,7 +11,7 @@ class RegisterView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"message":"User create Successfully", "details":serializer.data },status=status.HTTP_201_CREATED)
-        return Response({"message":"Failed", "details":serializer.data },status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message":"Failed", "details":serializer.errors },status=status.HTTP_400_BAD_REQUEST)
     
     
 class LoginView(APIView):
@@ -19,4 +19,5 @@ class LoginView(APIView):
         serializer=LoginSerializer(data=request.data)
         if serializer.is_valid():
             return Response({"message":"Login Successfully", "details":serializer.data },status=status.HTTP_200_OK)
-        return Response({"message":"Failed", "details":serializer.data },status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message":"Failed", "details":serializer.errors },status=status.HTTP_400_BAD_REQUEST)
+    

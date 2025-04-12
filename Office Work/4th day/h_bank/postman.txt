@@ -1,0 +1,21 @@
+
+http://localhost:8000/api/register/
+{
+    "username": "MDAhshanHabib",
+    "email":"ahshan@gmail.com",
+    "password": "ahshan@gmail.com",
+    "role": "account_holder",
+    "nominee": "Afroza",
+    "nominee_relationship" : "Mother",
+    "present_address":"South Kafrul",
+    "permanent_address": "Koyra",
+    "date_of_birth":"04/04/2000"
+}
+
+http://localhost:8000/api/login/
+
+{
+    "username": "tanvir",
+    "email":"tanvir@gmail.com",
+    "password": "kkkk"
+}

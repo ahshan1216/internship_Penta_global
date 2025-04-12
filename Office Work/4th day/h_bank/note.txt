@@ -1,0 +1,11 @@
+Why use meta?
+
+This tells the serializer exactly which fields to include when it serializes or deserializes data
+
+What to_representation does ?
+
+In Django REST Framework, to_representation(self, instance) is used to control how your data is returned — usually when you're sending a response (like after user registration).
+
+So in this case, it customizes the output of your serializer. Instead of returning all the fields (even write-only fields like password, role, etc.), you're telling it:
+
+"Only return id, username, email, and a success message."

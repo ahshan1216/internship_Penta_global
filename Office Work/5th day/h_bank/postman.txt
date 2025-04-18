@@ -18,9 +18,15 @@ http://localhost:8000/api/login/
     "username": "MDAhshanHabib",
     "password": "ahshan@gmail.com"
 }
+3596836707266
+{
+    "username": "afridayamin",
+    "password": "ahshan@gmail.com"
+}
+"7754226182704"
 http://localhost:8000/api/bank-transfer/
 
 {
-  "account_number": "3596836707267",
+  "account_number": "3596836707266",
   "balance": 100
 }

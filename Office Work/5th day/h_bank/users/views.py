@@ -6,7 +6,7 @@ from rest_framework import status
 from .serializers import RegisterSerializer,LoginSerializer,BankTransferSerializer
 import jwt
 from django.contrib.auth.models import User
-from .models import AccountHolderProfile
+from .models import AccountHolderProfile , Transaction
 # Create your views here.
 
 class RegisterView(APIView):
@@ -109,6 +109,18 @@ class BankTransferView(APIView):
                 sender_account.save()
                 receiver_account.save()
 
+                Transaction.objects.create(
+                    account_holder=sender_account,
+                    transaction_type='debit',
+                    amount=amount
+                )
+                
+                Transaction.objects.create(
+                    account_holder=receiver_account,
+                    transaction_type='credit',
+                    amount=amount
+                )
+
                 return Response({
                     "message": f"Transferred {amount} to {receiver_account.account_number}",
                     "sender_balance": str(sender_account.balance)
@@ -123,7 +135,44 @@ class BankTransferView(APIView):
         except User.DoesNotExist:
             return Response({"message": "User not found."}, status=404)
 
-    
+class TransactionHistoryView(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('access_token')
+
+        if not token:
+            return Response({"message": "Authentication required."}, status=401)
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user = User.objects.get(id=payload['id'])
+
+            if not user.is_active:
+                return Response({"message": "User account is inactive."}, status=403)
+
+            try:
+                account = AccountHolderProfile.objects.get(user=user)
+                transactions = Transaction.objects.filter(account_holder=account).order_by('-date')
+                transaction_list = [
+                    {
+                        "transaction_type": transaction.transaction_type,
+                        "amount": str(transaction.amount),
+                        "date": transaction.date.strftime("%d-%m-%Y %H:%M:%S")
+                    } for transaction in transactions
+                ]
+
+                return Response({
+                    "transactions": transaction_list
+                }, status=200)
+
+            except AccountHolderProfile.DoesNotExist:
+                return Response({"message": "Account not found."}, status=404)
+
+        except jwt.ExpiredSignatureError:
+            return Response({"message": "Token expired."}, status=401)
+        except jwt.InvalidTokenError:
+            return Response({"message": "Invalid token."}, status=401)
+        except User.DoesNotExist:
+            return Response({"message": "User not found."}, status=404)   
     
     
     

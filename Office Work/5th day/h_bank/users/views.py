@@ -3,9 +3,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer,LoginSerializer
+from .serializers import RegisterSerializer,LoginSerializer,BankTransferSerializer
 import jwt
 from django.contrib.auth.models import User
+from .models import AccountHolderProfile
 # Create your views here.
 
 class RegisterView(APIView):
@@ -53,11 +54,18 @@ class DashboardView(APIView):
             user = User.objects.get(id=payload['id'])
 
             # Fetch roles for the user
-            roles = [user_role.role.name for user_role in user.user_roles.all()] or ['No Role Selected']
+            roles = [user_role.role.name for user_role in user.user_roles.all()] or ['No Role Selected'] #not clear
             roles_string = ", ".join(roles)
+            
+            account=AccountHolderProfile.objects.get(user=user)
 
             return Response({
-                "message": f"Welcome to {user.username} of {roles_string}"
+                "message": f"Welcome to H_Bank PLC" ,
+                "roles": roles_string,
+                "username": user.username,
+                "balance": str(account.balance),
+                "account_number": account.account_number
+                
             })
         except User.DoesNotExist:
             return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -65,3 +73,62 @@ class DashboardView(APIView):
             return Response({"message": "Token has expired."}, status=status.HTTP_401_UNAUTHORIZED)
         except jwt.InvalidTokenError:
             return Response({"message": "Invalid token."}, status=status.HTTP_401_UNAUTHORIZED)
+
+# views.py
+class BankTransferView(APIView):
+    def post(self, request):
+        token = request.COOKIES.get('access_token')
+
+        if not token:
+            return Response({"message": "Authentication required."}, status=401)
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user = User.objects.get(id=payload['id'])
+
+            if not user.is_active:
+                return Response({"message": "User account is inactive."}, status=403)
+
+            try:
+                sender_account = AccountHolderProfile.objects.get(user=user)
+            except AccountHolderProfile.DoesNotExist:
+                return Response({"message": "Sender has no account."}, status=403)
+
+            serializer = BankTransferSerializer(data=request.data)
+            if serializer.is_valid():
+                receiver_account = serializer.validated_data["receiver_account"]
+                amount = serializer.validated_data["balance"]
+
+                if sender_account.balance < amount:
+                    return Response({"message": "Insufficient funds."}, status=400)
+
+                # Transfer funds
+                sender_account.balance -= amount
+                receiver_account.balance += amount
+
+                sender_account.save()
+                receiver_account.save()
+
+                return Response({
+                    "message": f"Transferred {amount} to {receiver_account.account_number}",
+                    "sender_balance": str(sender_account.balance)
+                }, status=200)
+
+            return Response({"errors": serializer.errors}, status=400)
+
+        except jwt.ExpiredSignatureError:
+            return Response({"message": "Token expired."}, status=401)
+        except jwt.InvalidTokenError:
+            return Response({"message": "Invalid token."}, status=401)
+        except User.DoesNotExist:
+            return Response({"message": "User not found."}, status=404)
+
+    
+    
+    
+    
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
+        response.delete_cookie('access_token')
+        return response

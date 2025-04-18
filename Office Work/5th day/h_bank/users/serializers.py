@@ -6,7 +6,7 @@ from users.models import Role, UserRole
 from django.contrib.auth import authenticate
 from django.conf import settings
 from .context import RegistrationContext, get_registration_strategy
-
+from .models import  ModeratorProfile, AccountHolderProfile
 class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -137,3 +137,23 @@ class LoginSerializer(serializers.Serializer):
         'username': user.username,  
         'token': token
     }
+
+# serializers.py
+class BankTransferSerializer(serializers.Serializer):
+    account_number = serializers.CharField(required=True)
+    balance = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=100)
+
+    def validate(self, data):
+        account_number = data.get("account_number")
+        amount = data.get("balance")
+
+        try:
+            receiver_account = AccountHolderProfile.objects.get(account_number=account_number)
+        except AccountHolderProfile.DoesNotExist:
+            raise serializers.ValidationError("Receiver account number is invalid.")
+
+        if not receiver_account.user.is_active:
+            raise serializers.ValidationError("Receiver account is inactive.")
+
+        data["receiver_account"] = receiver_account
+        return data

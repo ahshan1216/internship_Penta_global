@@ -42,6 +42,9 @@ class AccountHolderProfile(BaseProfile):
     nominee_relationship = models.CharField(max_length=50,default='Unknown')
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     
+    def __str__(self):
+        return f"Account Holder: {self.user.username}"
+    
 class Transaction(models.Model):
     account_holder = models.ForeignKey(AccountHolderProfile, on_delete=models.CASCADE, related_name='transactions')
     transaction_type = models.CharField(max_length=10)  

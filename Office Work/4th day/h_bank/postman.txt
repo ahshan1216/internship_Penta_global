@@ -15,7 +15,6 @@ http://localhost:8000/api/register/
 http://localhost:8000/api/login/
 
 {
-    "username": "tanvir",
-    "email":"tanvir@gmail.com",
+    "username": "MDAhshanHabib",
     "password": "kkkk"
 }

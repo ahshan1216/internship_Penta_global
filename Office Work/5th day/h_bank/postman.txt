@@ -15,7 +15,12 @@ http://localhost:8000/api/register/
 http://localhost:8000/api/login/
 
 {
-    "username": "tanvir",
-    "email":"tanvir@gmail.com",
-    "password": "kkkk"
+    "username": "MDAhshanHabib",
+    "password": "ahshan@gmail.com"
+}
+http://localhost:8000/api/bank-transfer/
+
+{
+  "account_number": "3596836707267",
+  "balance": 100
 }

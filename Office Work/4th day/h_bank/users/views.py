@@ -6,6 +6,7 @@ from rest_framework import status
 from .serializers import RegisterSerializer,LoginSerializer
 import jwt
 from django.contrib.auth.models import User
+from .models import AccountHolderProfile
 # Create your views here.
 
 class RegisterView(APIView):
@@ -55,9 +56,14 @@ class DashboardView(APIView):
             # Fetch roles for the user
             roles = [user_role.role.name for user_role in user.user_roles.all()] or ['No Role Selected']
             roles_string = ", ".join(roles)
+            
+            account=AccountHolderProfile.objects.get(user=user)
 
             return Response({
-                "message": f"Welcome to {user.username} of {roles_string}"
+                "message": f"Welcome to {user.username} of {roles_string}" ,
+                "balance": str(account.balance),
+                "account_number": account.account_number
+                
             })
         except User.DoesNotExist:
             return Response({"message": "User not found."}, status=status.HTTP_404_NOT_FOUND)

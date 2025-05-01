@@ -1,0 +1,19 @@
+django-admin startproject banking_system
+
+http://127.0.0.1:8000/accounts/register/account_holder/
+{
+    "full_name": "habib",
+    "dob": "2000-05-10",
+    "nominee": "Ammu",
+    "email": "habib@gmail.com",
+    "password": "habib"
+}
+
+transfer
+{
+  "sender_account": "1234567890",
+  "receiver_account": "0987654321",
+  "amount": 500,
+  "transaction_method": "paypal_transfer"
+}
+

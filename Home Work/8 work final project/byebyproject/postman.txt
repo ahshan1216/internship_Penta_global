@@ -1,0 +1,76 @@
+///////////////// Marchent Login///////////////////////
+http://localhost:8000/api/login/marchant/
+{
+"username": "merchantuser36client",
+"password": "strongpassword123"
+}
+
+///////////////////////END/////////////////////////////////
+
+
+
+/////////////// Marchent Payment/////////////
+
+Client to marchent payment
+http://localhost:8000/api/098765432937/70/
+{
+ "client_phone": "0123456789",
+  "pin":"1234"
+}
+
+
+
+////////////////////////////
+
+
+
+////////Register//////////////////
+
+
+
+Clinet 1
+
+http://localhost:8000/api/register/client/
+{
+  "username": "habib",
+  "email": "habib@example.com",
+  "password": "strongpassword123",
+  "phone_number": "0123456789",
+  "pin":"1234"
+}
+
+
+
+Clinet 2
+
+{
+  "username": "tanvir",
+  "email": "tanvir@example.com",
+  "password": "strongpassword123",
+  "phone_number": "01771046530",
+  "pin":"4567"
+}
+
+//////////////////End///////////////////////////
+
+
+
+///////////////////Login////////////////////////////
+http://localhost:8000/api/login/client/
+{
+"username": "habib",
+"password": "strongpassword123"
+}
+
+//////////////////End////////////////////////
+
+
+
+client to  client send money
+
+http://localhost:8000/api/clint-to-client/01771046530/50/
+{
+ "sender_clint_phone": "0123456789",
+  "sender_client_pin":"1234"
+}
+

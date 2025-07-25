@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Gateway</title>
+</head>
+<body>
+    <h2>Make a Payment</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Amount: </label>
+        <input type="number" name="amount" required><br><br>
+
+        <label>Select Payment Method:</label><br>
+        <select name="method" required>
+            <option value="paypal">PayPal</option>
+            <option value="stripe">Stripe</option>
+            <option value="bkash">Bkash</option>
+            <option value="nagad">Nagad</option>
+            <option value="rocket">Rocket</option>
+        </select><br><br>
+
+        <button type="submit">Pay Now</button>
+    </form>
+
+    {% if message %}
+        <h3>{{ message }}</h3>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,43 @@
+Factory Design Pattern:https://medium.com/django-unleashed/design-pattern-with-python-factory-pattern-26d80de9dea7
+
+প্রতিটা ফানশান আলাদা আলাদা করে লিখার চায়তে। সব ফাংসান কে ক্লাস বেজ করা। মানে একটা ক্লাস এর মধ্যে সব ওই পার্টিকুলার ফাংসান গুলা থাকবে ।
+
+Builders : https://manishankarjaiswal.medium.com/builder-design-pattern-using-python-a-step-by-step-guide-for-beginners-aeb29a6b747e
+1. Defining (like product)
+2. Building Interface (product builder)
+3.Concrete Builder (abs gaminngproduct , normalproduct)
+4. Director
+
+https://medium.com/django-unleashed/exploring-the-singleton-design-pattern-in-django-df796b181a13
+Singleton:Singleton Pattern makes sure that a class has only one instance in the whole program
+এটা এমন একদ ধরনের pattern যদি Database Exist করে তাহলে যতই নতুন create করি না কেন ও create হবে না। বার বার update হবে.
+
+Clean Architecture:
+Entity Layer: Contains business logic and entities.
+Use Case Layer: Contains the application of business rules.
+Interface Layer: Responsible for presenting data to the user.
+Infrastructure Layer: Deals with implementation details such as databases and external services.
+
+
+suppose kono book store er app banate hobe
+sekhane koto gula book takle maximum ekjon koto gula order korte parbe etc logic thakbe. aita hocce entity layer
+
+
+use case layer
+kivabe buy hobe and kothai save hobe setar function takbe
+
+
+interface layer hocce on kind of controller/api/UI
+
+
+ Infrastructure Layer-> db te save
+
+
+
+stategy->
+1. Context (list of process)
+2. Strategy Interface (declares a method the context uses to execute a strategy.)
+3. Concrete Strategies (all algorithon thake)
+4. Client ( stetigy pick kore context a patai)
+
+Client → picks a Strategy → gives it to Context → Context runs the task using that Strategy

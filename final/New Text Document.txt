@@ -1,0 +1,26 @@
+django-admin startproject parking_system
+cd parking_system
+python manage.py startapp core
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+
+
+custom
+class UserSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    phone = serializers.CharField(required=False)
+
+ngrok http http://localhost:8080
+
+{
+    "name": "test",
+    "email":"test@gmail.com",
+    "password": "test@gmail.com",
+    "phone": "01771046530"
+   
+}

@@ -1,0 +1,6 @@
+
+Solid , acid , depedence injection , inversion of control
+
+code: stretigy {4,5)
+builder
+ 

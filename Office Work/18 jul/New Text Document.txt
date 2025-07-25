@@ -1,0 +1,16 @@
+\l     check table
+
+CREATE USER ahshan WITH PASSWORD 'habib';  crate user
+
+
+\c railway activedb towork
+
+
+CREATE SCHEMA newschema AUTHORIZATION ahshan; permission to user
+
+ALTER ROLE ahshan SET client_encoding TO 'utf8';
+
+railway=# ALTER ROLE ahshan SET default_transaction_isolation TO 'read committed';
+railway=# ALTER ROLE ahshan SET timezone TO 'UTC';
+
+railway=# ALTER ROLE ahshan IN DATABASE railway set search_path =newschema;

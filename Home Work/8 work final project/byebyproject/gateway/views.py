@@ -45,7 +45,9 @@ class MarchantRegisterView(APIView):
         serializer = MarchantRegisterSerializer(data=request.data)
         if serializer.is_valid():
             marchant=serializer.save()
+            print(marchant)
             respose=MarchantRegisterSerializer(marchant).data
+            print(respose)
             return Response({"message": respose}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

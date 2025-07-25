@@ -49,7 +49,7 @@ class ClientRegisterSerializer(serializers.ModelSerializer):
         )
         return client
 
-
+#model serializer use kora hoi database update and creation er kaje. 
 class MarchantRegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
@@ -58,7 +58,7 @@ class MarchantRegisterSerializer(serializers.ModelSerializer):
     auth_key = serializers.CharField(read_only=True)
     sec_key = serializers.CharField(read_only=True)
 
-    class Meta:
+    class Meta:  # model serializer jonne use kora hoi.
         model = Marchant
         fields = ['username', 'email', 'password', 'phone_number', 'auth_key', 'sec_key']
         
@@ -87,8 +87,8 @@ class MarchantRegisterSerializer(serializers.ModelSerializer):
                 password=validated_data['password']
             )
        
-        role, _ = Role.objects.get_or_create(name='marchant')
-        AssignRole.objects.create(user=user, role=role)
+        role, _ = Role.objects.get_or_create(name='marchant') # database jodi marchand name a role already create thake toh valo. otherwise new create hobe.(instance , Create)
+        AssignRole.objects.create(user=user, role=role) # aigula actually ek ek ta id
       
         auth_key = self.generate_unique_auth_key()
         sec_key= self.generate_unique_auth_key()
@@ -104,8 +104,8 @@ class MarchantRegisterSerializer(serializers.ModelSerializer):
         )
         return marchant
 
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
+    def to_representation(self, instance):   # printing representation er jonne use kora hoi.database a save hoaar por aita call hoi
+        rep = super().to_representation(instance) # super use kore hoi seta dekhbe oita override kore change kore. jodi na dei taile menaully sob json banate hobe
         rep['username'] = instance.user.username
         rep['email'] = instance.user.email
        
